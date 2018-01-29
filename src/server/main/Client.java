@@ -17,7 +17,6 @@ public class Client extends Thread{
 	private int id; 
 	private String username;
 
-	//looping
 	private boolean running = false;
 	private boolean waitingForUsername = true;
 	
@@ -47,25 +46,54 @@ public class Client extends Thread{
 					if(waitingForUsername) out("NAMEBAD");
 					else out("NAMEGOOD");
 				}
-				System.out.println("Good to go");
+				chat.addUser(username, id);
 			}
 			running = true;
 			while(running) {
 				String line = in.readLine();
 				if(line.startsWith("MESSAGE")) {
 					chat.sendMessage(username + ": " +line.substring(8));
+				} else if(line.startsWith("DISCONNECTING")) {
+					connectionLost();
 				}
 			}
 		} catch(Exception e) {
-			System.out.println("Server client error: " + e.getMessage());
+//			System.out.println("Server client error: " + e.getMessage());
+			connectionLost();
 		}
 		
 	}
 	
+	//closing out if the server made it happen
+	public void close() {
+		try {
+			out.println("SERVERCLOSING");
+			in.close();
+			out.close();
+			socket.close();
+			running = false;
+		} catch(Exception e) {
+			
+		}
+	}
+	
+	//closing out if the client made it happen
+	public void connectionLost() {
+		try {
+			chat.removeUser(username, id);
+			in.close();
+			out.close();
+			socket.close();
+			running = false;
+		} catch(Exception e) {
+			
+		}
+	}
+	
+	//shortcut for using the outstream
 	public void out(String s) {
 		out.println(s);
 	}
-	
 	
 	public int getClientId() {return id;}
 	
