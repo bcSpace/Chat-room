@@ -19,14 +19,14 @@ public class ClientGui {
 	private Chatter chat;
 	
 	private JFrame frame;
+
 	private JPanel startPanel; 
-	
 	private JLabel ipLabel = new JLabel("IP: ");
 	private JTextField ipField; 
 	private JButton connectButton; 
 	
+	//the chat frame to go to when connected
 	private MainChat mainChat;
-	
 	
 	public ClientGui(Chatter chat) {
 		this.chat = chat;
@@ -60,6 +60,12 @@ public class ClientGui {
 	
 	public void start() {
 		frame.setVisible(true);
+	}
+	
+	public void restart() {
+		mainChat.restart();
+		frame.setVisible(true);
+		connectButton.setEnabled(true);
 	}
 	
 	public void connect() {
