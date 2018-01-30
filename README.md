@@ -12,7 +12,7 @@ Once connection is accepted user needs to enter a unique username
 Once a unique name is entered they have access to the chatroom and can send messages or disconnect back to the ip prompt
 
 ## Server
-The server handles connections from the clients, up to a max amount of clients, which is hard coded at 10
+The server handles connections from the clients, up to a max number of clients, which is hard coded at 10
 
 Server displays what clients are connected and their name/client id
 
