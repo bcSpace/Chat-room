@@ -68,9 +68,9 @@ public class Client extends Thread{
 	public void close() {
 		try {
 			out.println("SERVERCLOSING");
+			socket.close();
 			in.close();
 			out.close();
-			socket.close();
 			running = false;
 		} catch(Exception e) {
 			
@@ -81,12 +81,24 @@ public class Client extends Thread{
 	public void connectionLost() {
 		try {
 			chat.removeUser(username, id);
+			socket.close();
 			in.close();
 			out.close();
-			socket.close();
 			running = false;
 		} catch(Exception e) {
 			
+		}
+	}
+	
+	public void kick() {
+		try {
+			out.println("KICKED");
+			running = false;
+			socket.close();
+			in.close();
+			out.close();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -96,6 +108,6 @@ public class Client extends Thread{
 	}
 	
 	public int getClientId() {return id;}
-	
+	public String getUsername() {return username;}
 	
 }

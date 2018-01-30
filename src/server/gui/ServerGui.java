@@ -94,6 +94,15 @@ public class ServerGui {
 			  } 
 		});
 		
+		commandLine.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  if(serverRunning) {
+					  sendCommand();
+				  } else {
+				  }
+			  } 
+		});
+		
 	}
 	
 	//adding a new user
@@ -116,6 +125,21 @@ public class ServerGui {
 	//used for parsing command line and executing commands
 	public void sendCommand() {
 		String command = commandLine.getText();
+		
+		if(command.startsWith("kickall")) {
+			
+			int ids[] = new int[table.getRowCount()]; 
+			for(int i = 0; i < ids.length; i++) {
+				ids[i] = (int)table.getValueAt(i, 1);
+			}
+			for(int i = 0; i < ids.length; i++) chat.kick(ids[i]);
+			
+			
+		} else if(command.startsWith("kick")) {
+			int id = Integer.parseInt(command.substring(5));
+			chat.kick(id);
+		}
+		
 		commandLine.setText("");
 	}
 	
@@ -137,9 +161,9 @@ public class ServerGui {
 	}
 	
 	public void stop() {
+		log("SERVER: Server Closed");
 		serverRunning = false;
 		chat.stop();
-		log("SERVER: Server Closed");
 		start.setEnabled(true);
 		start.setText("Start");
 		//create a log file

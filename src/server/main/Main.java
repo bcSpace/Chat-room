@@ -37,7 +37,6 @@ public class Main extends Chatter {
 				pw.close();
 			} else {
 				//add the client
-				System.out.println("Added a client: " + clientId);
 				Client client = new Client();
 				client.create(this, socket, clientId, "User_"+clientId++);
 				client.start();
@@ -48,11 +47,11 @@ public class Main extends Chatter {
 		}
 	}
 	
-	private synchronized void addClient(Client client) {
+	private void addClient(Client client) {
 		clientList.add(client);
 	}
 	
-	private synchronized void removeClient(int clientId) {
+	private void removeClient(int clientId) {
 		for(int i = 0; i < clientList.size(); i++) {
 			if(clientList.get(i).getClientId() == clientId) {
 				clientList.remove(i);
@@ -123,6 +122,25 @@ public class Main extends Chatter {
 	public void broadcast(String s) {
 		for(int i = 0; i < clientList.size(); i++) {
 			clientList.get(i).out(s);
+		}
+	}
+	
+	//kicking users
+	public void kick(int id) {
+		try {
+		for(int i = 0; i < clientList.size(); i++) {
+			Client c = clientList.get(i);
+			if(c.getClientId() == id) {
+				c.kick();
+				this.removeClient(id);
+				this.broadcast("MESSAGE " + c.getUsername() + " kicked");
+				gui.log("Kicked " + c.getUsername());
+				gui.removeUser(id);
+				i = clientList.size()+1;
+			}
+		}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

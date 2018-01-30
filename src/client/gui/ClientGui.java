@@ -83,10 +83,9 @@ public class ClientGui {
 	}
 	
 	public void nameGood() {
-		System.out.println("Name good");
-		frame.dispose();
 		frame.setVisible(false);
-		mainChat.start();
+		mainChat.start(frame);
+		frame.dispose();
 	}
 	
 	public void nameBad() {

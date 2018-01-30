@@ -39,14 +39,12 @@ public class Main extends Chatter {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			
 			String allowed = in.readLine();
-			System.out.print(allowed);
 			if(allowed.startsWith("CONNECTION_ACCEPTED")) {
 				//allow
 			} else if(allowed.startsWith("Rejected")) {
-				System.out.print("Connection rejected");
+				socket.close();
 				in.close();
 				out.close();
-				socket.close();
 				failed = true;
 				s="Server full";
 			} else {
@@ -84,6 +82,8 @@ public class Main extends Chatter {
 					gui.message(line.substring(8));
 				} else if(line.startsWith("SERVERCLOSING")) {
 					exit("Server closing");
+				} else if(line.startsWith("KICKED")) {
+					exit("Kicked");
 				}
 			} catch (IOException e) {
 				if(e.getMessage().equals("Connection reset")) exit("Unexpected Server Error");
@@ -116,9 +116,9 @@ public class Main extends Chatter {
 		running = false;
 		try {
 			out.println("DISCONNECTING");
+			socket.close();
 			out.close();
 			in.close();
-			socket.close();
 			gui.restart();
 		} catch(Exception e) {
 			System.out.println("Disconnect error: " + e.getMessage());
@@ -129,9 +129,9 @@ public class Main extends Chatter {
 	public void exit(String s) {
 		try {
 			running = false;
+			socket.close();
 			in.close();
 			out.close();
-			socket.close();
 			JOptionPane.showMessageDialog(null, s, "Server", JOptionPane.WARNING_MESSAGE);
 			gui.restart();
 		} catch(Exception e) {

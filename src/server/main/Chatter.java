@@ -8,5 +8,6 @@ public abstract class Chatter {
 	public abstract void stop(); //ending
 	public abstract void addUser(String name, int id); //adding a user after a good username is made
 	public abstract void removeUser(String name, int id); //removing a user
+	public abstract void kick(int id); //kicking user
 	
 }

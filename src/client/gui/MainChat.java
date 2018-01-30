@@ -83,7 +83,8 @@ public class MainChat {
 		
 	}
 	
-	public void start() {
+	public void start(JFrame f) {
+		frame.setLocationRelativeTo(f);
 		frame.setVisible(true);
 	}
 	
